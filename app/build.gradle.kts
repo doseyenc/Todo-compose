@@ -70,5 +70,6 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 
-
+    //Compose Navigation
+    implementation(libs.androidx.navigation.compose)
 }
