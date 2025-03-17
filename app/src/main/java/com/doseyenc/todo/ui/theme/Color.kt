@@ -7,8 +7,12 @@ import androidx.compose.ui.graphics.Color
 
 val Purple80 = Color(0xFFD0BCFF)
 val Purple500 = Color(0xFF6200EE)
+val Purple700 = Color(0xFF3700B3)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)
+
+
+val Teal200 = Color(0xFF03DAC5)
 
 val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
@@ -31,6 +35,11 @@ val ColorScheme.topAppBarContentColor: Color
 val ColorScheme.topAppBarBackgroundColor: Color
     @Composable
     get() = if (isLightColorScheme) Purple500 else Color.Black
+
+val ColorScheme.fabBackgroundColor: Color
+    @Composable
+    get() = if (isLightColorScheme) Teal200 else Purple700
+
 
 val isLightColorScheme: Boolean
     @Composable
