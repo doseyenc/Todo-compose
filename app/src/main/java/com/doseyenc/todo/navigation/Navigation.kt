@@ -19,7 +19,7 @@ fun SetupNavigation(
 
     NavHost(
         navController = navController,
-        startDestination = LIST_SCREEN
+        startDestination = "list/NO_ACTION"
     ){
         listComposable(
             navigateToTaskScreen = screen.task
