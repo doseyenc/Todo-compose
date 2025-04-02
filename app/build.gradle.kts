@@ -76,4 +76,5 @@ dependencies {
 
     implementation(libs.androidx.hilt.navigation.fragment)
     kapt(libs.androidx.hilt.compiler)
+    implementation(libs.accompanist.systemuicontroller)
 }

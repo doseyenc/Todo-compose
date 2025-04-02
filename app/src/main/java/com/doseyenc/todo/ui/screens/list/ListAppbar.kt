@@ -1,8 +1,11 @@
 package com.doseyenc.todo.ui.screens.list
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -21,6 +24,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,6 +49,7 @@ import com.doseyenc.todo.ui.theme.topAppBarBackgroundColor
 import com.doseyenc.todo.ui.theme.topAppBarContentColor
 import com.doseyenc.todo.ui.viewmodels.SharedViewModel
 import com.doseyenc.todo.util.SearchAppBarState
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun ListAppbar(
@@ -221,9 +226,20 @@ fun SearchAppBar(
     onCloseClicked: () -> Unit,
     onSearchClicked: (String) -> Unit
 ) {
+    val systemUiController = rememberSystemUiController()
+    val statusBarColor = MaterialTheme.colorScheme.topAppBarBackgroundColor
+
+    SideEffect {
+        systemUiController.setStatusBarColor(
+            color = statusBarColor,
+            darkIcons = false
+        )
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(WindowInsets.statusBars.asPaddingValues())
             .height(TOP_APP_BAR_HEIGHT),
         shadowElevation = TOP_APP_BAR_ELEVATION,
         color = MaterialTheme.colorScheme.topAppBarBackgroundColor
