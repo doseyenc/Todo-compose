@@ -2,7 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -51,6 +53,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -69,9 +72,8 @@ dependencies {
 
     //Dagger-Hilt
     implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
-    ksp(libs.androidx.hilt.compiler)
+    kapt(libs.hilt.android.compiler)
 
-    //Compose Navigation
-    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.fragment)
+    kapt(libs.androidx.hilt.compiler)
 }

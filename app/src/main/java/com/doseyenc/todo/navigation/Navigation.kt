@@ -6,12 +6,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.doseyenc.todo.navigation.destinations.listComposable
 import com.doseyenc.todo.navigation.destinations.taskComposable
-
-import com.doseyenc.todo.util.Constants.LIST_SCREEN
+import com.doseyenc.todo.ui.viewmodels.SharedViewModel
 
 @Composable
 fun SetupNavigation(
-    navController: NavHostController
+    navController: NavHostController,
+    sharedViewModel: SharedViewModel
 ){
     val screen = remember(navController){
         Screens(navController = navController)
@@ -22,7 +22,8 @@ fun SetupNavigation(
         startDestination = "list/NO_ACTION"
     ){
         listComposable(
-            navigateToTaskScreen = screen.task
+            navigateToTaskScreen = screen.task,
+            sharedViewModel = sharedViewModel
         )
         taskComposable(
             navigateToListScreen = screen.list

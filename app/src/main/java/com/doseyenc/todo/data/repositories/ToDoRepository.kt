@@ -5,7 +5,6 @@ import com.doseyenc.todo.data.models.ToDoTask
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
-@ViewModelScoped
 class ToDoRepository @Inject constructor(private val toDoDao: ToDoDao) {
 
     val getAllTasks = toDoDao.getAllTasks()

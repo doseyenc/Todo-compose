@@ -5,19 +5,23 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.doseyenc.todo.ui.screens.list.ListScreen
-import com.doseyenc.todo.util.Action
+import com.doseyenc.todo.ui.viewmodels.SharedViewModel
 import com.doseyenc.todo.util.Constants.LIST_ARGUMENT_KEY
 import com.doseyenc.todo.util.Constants.LIST_SCREEN
 
 fun NavGraphBuilder.listComposable(
-    navigateToTaskScreen: (taskId: Int) -> Unit
-) {
+    navigateToTaskScreen: (taskId: Int) -> Unit,
+    sharedViewModel: SharedViewModel
+    ) {
     composable(
         route = LIST_SCREEN,
         arguments = listOf(navArgument(LIST_ARGUMENT_KEY) {
             type = NavType.StringType
         })
     ) {
-        ListScreen(navigateToTaskScreen = navigateToTaskScreen)
+        ListScreen(
+            navigateToTaskScreen = navigateToTaskScreen,
+            sharedViewModel = sharedViewModel
+        )
     }
 }

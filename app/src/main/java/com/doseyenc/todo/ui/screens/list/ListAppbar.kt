@@ -43,16 +43,40 @@ import com.doseyenc.todo.ui.theme.TOP_APP_BAR_HEIGHT
 import com.doseyenc.todo.ui.theme.Typography
 import com.doseyenc.todo.ui.theme.topAppBarBackgroundColor
 import com.doseyenc.todo.ui.theme.topAppBarContentColor
+import com.doseyenc.todo.ui.viewmodels.SharedViewModel
+import com.doseyenc.todo.util.SearchAppBarState
 
 @Composable
-fun ListAppbar() {
-    //DefaultListAppbar()
-    SearchAppBar(
-        text = "",
-        onSearchClicked = {},
-        onCloseClicked = {},
-        onTextChanged = {}
-    )
+fun ListAppbar(
+    sharedViewModel: SharedViewModel,
+    searchAppBarState: SearchAppBarState,
+    searchTextState: String,
+) {
+    when (searchAppBarState) {
+        SearchAppBarState.CLOSED -> {
+            DefaultListAppbar(
+                onSearchClicked = {
+                    sharedViewModel.searchAppBarState.value = SearchAppBarState.OPENED
+                },
+                onSortClicked = {},
+                onDeleteClicked = {}
+            )
+        }
+
+        else -> {
+            SearchAppBar(
+                text = searchTextState,
+                onSearchClicked = { newText ->
+                    sharedViewModel.searchTextState.value = newText
+                },
+                onCloseClicked = {
+                    sharedViewModel.searchAppBarState.value = SearchAppBarState.CLOSED
+                    sharedViewModel.searchTextState.value = ""
+                },
+                onTextChanged = {}
+            )
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -224,7 +248,7 @@ fun SearchAppBar(
                 IconButton(
                     modifier = Modifier.alpha(ContentAlpha.disabled),
                     onClick = {
-                       // onSearchClicked()
+                        // onSearchClicked()
                     }
                 ) {
                     Icon(
@@ -256,11 +280,11 @@ fun SearchAppBar(
                 }
             ),
             colors = TextFieldDefaults.colors(
-               focusedContainerColor = MaterialTheme.colorScheme.topAppBarBackgroundColor,
-                unfocusedContainerColor =  MaterialTheme.colorScheme.topAppBarBackgroundColor,
-                focusedIndicatorColor =  Color.Transparent,
-                disabledIndicatorColor =  Color.Transparent,
-                unfocusedIndicatorColor =  Color.Transparent,
+                focusedContainerColor = MaterialTheme.colorScheme.topAppBarBackgroundColor,
+                unfocusedContainerColor = MaterialTheme.colorScheme.topAppBarBackgroundColor,
+                focusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
                 cursorColor = MaterialTheme.colorScheme.topAppBarContentColor
             )
         )
