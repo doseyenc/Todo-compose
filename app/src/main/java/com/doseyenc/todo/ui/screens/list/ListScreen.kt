@@ -29,7 +29,7 @@ fun ListScreen(
             ListAppbar(
                 sharedViewModel = sharedViewModel,
                 searchAppBarState = searchAppBarState,
-                searchTextState = searchTextState.toString()
+                searchTextState = searchTextState
             )
         },
         floatingActionButton = {
