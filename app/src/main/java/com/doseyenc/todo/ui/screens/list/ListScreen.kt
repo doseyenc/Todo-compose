@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.doseyenc.todo.R
+import com.doseyenc.todo.ui.theme.Purple500
 import com.doseyenc.todo.ui.theme.fabBackgroundColor
 import com.doseyenc.todo.ui.viewmodels.SharedViewModel
 import com.doseyenc.todo.util.SearchAppBarState

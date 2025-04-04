@@ -1,11 +1,13 @@
 package com.doseyenc.todo.ui.screens.list
 
+import android.app.Activity
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -32,16 +34,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.wear.compose.material.ContentAlpha
 import com.doseyenc.todo.R
 import com.doseyenc.todo.components.PriorityItem
 import com.doseyenc.todo.data.models.Priority
 import com.doseyenc.todo.ui.theme.LARGE_PADDING
+import com.doseyenc.todo.ui.theme.Purple500
 import com.doseyenc.todo.ui.theme.TOP_APP_BAR_ELEVATION
 import com.doseyenc.todo.ui.theme.TOP_APP_BAR_HEIGHT
 import com.doseyenc.todo.ui.theme.Typography
@@ -49,7 +57,7 @@ import com.doseyenc.todo.ui.theme.topAppBarBackgroundColor
 import com.doseyenc.todo.ui.theme.topAppBarContentColor
 import com.doseyenc.todo.ui.viewmodels.SharedViewModel
 import com.doseyenc.todo.util.SearchAppBarState
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.doseyenc.todo.util.TrailingIconState
 
 @Composable
 fun ListAppbar(
@@ -71,14 +79,14 @@ fun ListAppbar(
         else -> {
             SearchAppBar(
                 text = searchTextState,
-                onSearchClicked = { newText ->
-                    sharedViewModel.searchTextState.value = newText
-                },
+                onSearchClicked = {},
                 onCloseClicked = {
                     sharedViewModel.searchAppBarState.value = SearchAppBarState.CLOSED
                     sharedViewModel.searchTextState.value = ""
                 },
-                onTextChanged = {}
+                onTextChanged = { newText ->
+                    sharedViewModel.searchTextState.value = newText
+                }
             )
         }
     }
@@ -226,14 +234,12 @@ fun SearchAppBar(
     onCloseClicked: () -> Unit,
     onSearchClicked: (String) -> Unit
 ) {
-    val systemUiController = rememberSystemUiController()
     val statusBarColor = MaterialTheme.colorScheme.topAppBarBackgroundColor
 
-    SideEffect {
-        systemUiController.setStatusBarColor(
-            color = statusBarColor,
-            darkIcons = false
-        )
+    SetStatusBarColor(color = statusBarColor, darkIcons = false)
+
+    var trailingIconState by remember {
+        mutableStateOf(TrailingIconState.READY_TO_DELETE)
     }
 
     Surface(
@@ -277,7 +283,20 @@ fun SearchAppBar(
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        onCloseClicked()
+                        when(trailingIconState){
+                            TrailingIconState.READY_TO_DELETE -> {
+                                onTextChanged("")
+                                trailingIconState = TrailingIconState.READY_TO_CLOSE
+                            }
+                            TrailingIconState.READY_TO_CLOSE -> {
+                                if (text.isNotEmpty()){
+                                    onTextChanged("")
+                                }else{
+                                    onCloseClicked()
+                                    trailingIconState = TrailingIconState.READY_TO_DELETE
+                                }
+                            }
+                        }
                     }
                 ) {
                     Icon(
@@ -304,6 +323,20 @@ fun SearchAppBar(
                 cursorColor = MaterialTheme.colorScheme.topAppBarContentColor
             )
         )
+    }
+}
+
+@Composable
+fun SetStatusBarColor(color: Color, darkIcons: Boolean = false) {
+    val view = LocalView.current
+    val context = LocalContext.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (context as? Activity)?.window ?: return@SideEffect
+            window.statusBarColor = color.toArgb()
+            val insetsController = WindowInsetsControllerCompat(window, view)
+            insetsController.isAppearanceLightStatusBars = darkIcons
+        }
     }
 }
 

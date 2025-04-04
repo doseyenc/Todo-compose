@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.doseyenc.todo"
-        minSdk = 25
+        minSdk = 30
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -77,4 +77,7 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.fragment)
     kapt(libs.androidx.hilt.compiler)
     implementation(libs.accompanist.systemuicontroller)
+
+    //Material3
+    implementation(libs.material3)
 }
