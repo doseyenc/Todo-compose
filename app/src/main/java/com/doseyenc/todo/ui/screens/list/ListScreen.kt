@@ -1,5 +1,6 @@
 package com.doseyenc.todo.ui.screens.list
 
+import android.annotation.SuppressLint
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
@@ -7,25 +8,36 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.doseyenc.todo.R
-import com.doseyenc.todo.ui.theme.Purple500
 import com.doseyenc.todo.ui.theme.fabBackgroundColor
 import com.doseyenc.todo.ui.viewmodels.SharedViewModel
 import com.doseyenc.todo.util.SearchAppBarState
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ListScreen(
     navigateToTaskScreen: (taskId: Int) -> Unit,
     sharedViewModel: SharedViewModel
 ) {
+    LaunchedEffect(key1 = true) {
+        sharedViewModel.getAllTasks()
+    }
 
+    val allTasks by sharedViewModel.allTasks.collectAsState()
     val searchAppBarState :SearchAppBarState by sharedViewModel.searchAppBarState
     val searchTextState  by sharedViewModel.searchTextState
     Scaffold(
-        content = {},
+        content = {
+            ListContent(
+                tasks = allTasks,
+                navigateToTaskScreen = navigateToTaskScreen
+            )
+        },
         topBar = {
             ListAppbar(
                 sharedViewModel = sharedViewModel,
