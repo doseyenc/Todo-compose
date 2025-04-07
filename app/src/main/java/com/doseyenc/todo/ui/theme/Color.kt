@@ -1,14 +1,9 @@
 package com.doseyenc.todo.ui.theme
 
-import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowInsetsControllerCompat
 
 val Purple80 = Color(0xFFD0BCFF)
 val Purple500 = Color(0xFF6200EE)
@@ -45,21 +40,15 @@ val ColorScheme.fabBackgroundColor: Color
     @Composable
     get() = if (isLightColorScheme) Teal200 else Purple700
 
+val ColorScheme.taskItemBackground: Color
+    @Composable
+    get() = if (isLightColorScheme) Color.White else DarkGray
+
+val ColorScheme.taskItemTextColor: Color
+    @Composable
+    get() = if (isLightColorScheme) DarkGray else LightGray
+
 
 val isLightColorScheme: Boolean
     @Composable
     get() = !isSystemInDarkTheme()
-
-
-@Composable
-fun SetStatusBarColor(color: Color, darkIcons: Boolean = false) {
-    val context = LocalContext.current
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        val window = (context as? Activity)?.window ?: return
-        window.setDecorFitsSystemWindows(false)
-        window.statusBarColor = Purple500.toArgb()
-        val insetsController = WindowInsetsControllerCompat(window, view)
-        insetsController.isAppearanceLightStatusBars = darkIcons
-    }
-    }
