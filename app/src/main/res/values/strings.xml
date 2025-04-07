@@ -6,4 +6,6 @@
     <string name="deleteAll">Delete All</string>
     <string name="tasks">Tasks</string>
     <string name="closeIcon">Close</string>
+    <string name="empty">sad face icon</string>
+    <string name="no_tasks_found">No Tasks Found</string>
 </resources>
