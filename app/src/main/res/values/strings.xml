@@ -12,4 +12,5 @@
     <string name="no_tasks_found">No Tasks Found</string>
     <string name="back_icon">Back Icon</string>
     <string name="add_task">"Add Task</string>
+    <string name="drop_down_arrow">Drop Down Arrow</string>
 </resources>
