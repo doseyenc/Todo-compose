@@ -1,6 +1,7 @@
 package com.doseyenc.todo.ui.screens.list
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
@@ -60,6 +61,7 @@ fun ListFab(
         onClick = {
             onFabClicked(-1)
         },
+        shape = CircleShape,
         containerColor = MaterialTheme.colorScheme.fabBackgroundColor
     ) {
         Icon(
