@@ -13,4 +13,6 @@
     <string name="back_icon">Back Icon</string>
     <string name="add_task">"Add Task</string>
     <string name="drop_down_arrow">Drop Down Arrow</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
 </resources>
