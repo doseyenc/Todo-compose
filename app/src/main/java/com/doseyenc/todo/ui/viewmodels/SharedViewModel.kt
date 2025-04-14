@@ -9,9 +9,11 @@ import com.doseyenc.todo.data.models.Priority
 import com.doseyenc.todo.data.models.ToDoTask
 import com.doseyenc.todo.data.repositories.ToDoRepository
 import com.doseyenc.todo.ui.theme.MAX_TITLE_LENGTH
+import com.doseyenc.todo.util.Action
 import com.doseyenc.todo.util.RequestState
 import com.doseyenc.todo.util.SearchAppBarState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -21,6 +23,8 @@ import javax.inject.Inject
 class SharedViewModel @Inject constructor(
     private val repository: ToDoRepository
 ) : ViewModel() {
+
+    val action: MutableState<Action> = mutableStateOf(Action.NO_ACTION)
 
     private var id: MutableState<Int> = mutableIntStateOf(0)
     var title: MutableState<String> = mutableStateOf("")
@@ -80,5 +84,63 @@ class SharedViewModel @Inject constructor(
 
     fun validateFields(): Boolean {
         return title.value.isNotEmpty() && description.value.isNotEmpty()
+    }
+
+    private fun addTask() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val newTask = ToDoTask(
+                title = title.value,
+                description = description.value,
+                priority = priority.value
+            )
+            repository.addTask(newTask)
+        }
+    }
+
+    private fun deleteTask() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteTask(_selectedTask.value!!)
+        }
+    }
+
+    private fun deleteAllTasks() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllTasks()
+        }
+    }
+
+    private fun updateTask() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val updatedTask = ToDoTask(
+                id = id.value,
+                title = title.value,
+                description = description.value,
+                priority = priority.value
+            )
+            repository.updateTask(updatedTask)
+        }
+    }
+
+    fun handleDatabaseActions(action: Action) {
+        when (action) {
+            Action.ADD -> {
+                addTask()
+            }
+
+            Action.UPDATE -> {
+
+            }
+
+            Action.DELETE -> {
+
+            }
+
+            Action.DELETE_ALL -> {
+
+            }
+
+            else -> {}
+        }
+        this.action.value = Action.NO_ACTION
     }
 }
