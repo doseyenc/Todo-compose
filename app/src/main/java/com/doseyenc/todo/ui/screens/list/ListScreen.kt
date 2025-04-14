@@ -35,6 +35,7 @@ fun ListScreen(
     }
 
     val allTasks by sharedViewModel.allTasks.collectAsState()
+    val searchedTasks by sharedViewModel.searchedTasks.collectAsState()
     val searchAppBarState: SearchAppBarState by sharedViewModel.searchAppBarState
     val searchTextState by sharedViewModel.searchTextState
 
@@ -67,8 +68,10 @@ fun ListScreen(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
         content = {
             ListContent(
-                tasks = allTasks,
-                navigateToTaskScreen = navigateToTaskScreen
+                allTasks = allTasks,
+                navigateToTaskScreen = navigateToTaskScreen,
+                searchAppBarState = searchAppBarState,
+                searchedTasks = searchedTasks,
             )
         },
         topBar = {
