@@ -44,6 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.wear.compose.material.ContentAlpha
 import com.doseyenc.todo.R
+import com.doseyenc.todo.components.DisplayAlertDialog
 import com.doseyenc.todo.components.PriorityItem
 import com.doseyenc.todo.data.models.Priority
 import com.doseyenc.todo.ui.theme.LARGE_PADDING
@@ -128,9 +129,22 @@ fun ListAppbarActions(
     onSortClicked: (Priority) -> Unit,
     onDeleteAllClicked: () -> Unit
 ) {
+    var openDialog by remember {
+        mutableStateOf(false)
+    }
+
+    DisplayAlertDialog(
+        title = stringResource(R.string.delete_all_task),
+        message = stringResource(R.string.delete_all_tasks_confirme),
+        onConfirm = { onDeleteAllClicked() },
+        onDismiss = { openDialog = false },
+        openDialog = openDialog
+    )
     SearchAction(onSearchClicked)
     SortAction(onSortClicked)
-    DeleteAllAction(onDeleteAllClicked)
+    DeleteAllAction(onDeleteClicked = {
+        openDialog = true
+    })
 }
 
 @Composable
@@ -285,15 +299,16 @@ fun SearchAppBar(
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        when(trailingIconState){
+                        when (trailingIconState) {
                             TrailingIconState.READY_TO_DELETE -> {
                                 onTextChanged("")
                                 trailingIconState = TrailingIconState.READY_TO_CLOSE
                             }
+
                             TrailingIconState.READY_TO_CLOSE -> {
-                                if (text.isNotEmpty()){
+                                if (text.isNotEmpty()) {
                                     onTextChanged("")
-                                }else{
+                                } else {
                                     onCloseClicked()
                                     trailingIconState = TrailingIconState.READY_TO_DELETE
                                 }
