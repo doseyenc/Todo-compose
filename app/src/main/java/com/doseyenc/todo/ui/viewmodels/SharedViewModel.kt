@@ -128,19 +128,18 @@ class SharedViewModel @Inject constructor(
             }
 
             Action.UPDATE -> {
-
+                updateTask()
             }
 
             Action.DELETE -> {
-
+                deleteTask()
             }
 
             Action.DELETE_ALL -> {
-
+                deleteAllTasks()
             }
 
             else -> {}
         }
-        this.action.value = Action.NO_ACTION
     }
 }
