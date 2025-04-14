@@ -53,6 +53,7 @@ import com.doseyenc.todo.ui.theme.Typography
 import com.doseyenc.todo.ui.theme.topAppBarBackgroundColor
 import com.doseyenc.todo.ui.theme.topAppBarContentColor
 import com.doseyenc.todo.ui.viewmodels.SharedViewModel
+import com.doseyenc.todo.util.Action
 import com.doseyenc.todo.util.SearchAppBarState
 import com.doseyenc.todo.util.TrailingIconState
 
@@ -69,7 +70,10 @@ fun ListAppbar(
                     sharedViewModel.searchAppBarState.value = SearchAppBarState.OPENED
                 },
                 onSortClicked = {},
-                onDeleteClicked = {}
+                onDeleteClicked = {
+                    sharedViewModel.action.value = Action.DELETE_ALL
+                    sharedViewModel.handleDatabaseActions(sharedViewModel.action.value)
+                }
             )
         }
 

@@ -41,7 +41,7 @@ fun ListScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(key1 = action) {
-        if (action != Action.NO_ACTION) {
+        if (action != Action.NO_ACTION && action != Action.DELETE_ALL) {
             sharedViewModel.handleDatabaseActions(action)
             val snackbarResult = snackbarHostState.showSnackbar(
                 message = "${action.name}: ${sharedViewModel.title.value}",
