@@ -112,6 +112,7 @@ class SharedViewModel @Inject constructor(
     private fun deleteAllTasks() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAllTasks()
+            action.value = Action.NO_ACTION
         }
     }
 
@@ -143,6 +144,10 @@ class SharedViewModel @Inject constructor(
 
             Action.DELETE_ALL -> {
                 deleteAllTasks()
+            }
+
+            Action.UNDO -> {
+                addTask()
             }
 
             else -> {}

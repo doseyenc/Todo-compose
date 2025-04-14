@@ -71,8 +71,7 @@ fun ListAppbar(
                 },
                 onSortClicked = {},
                 onDeleteClicked = {
-                    sharedViewModel.action.value = Action.DELETE_ALL
-                    sharedViewModel.handleDatabaseActions(sharedViewModel.action.value)
+                    sharedViewModel.handleDatabaseActions(Action.DELETE_ALL)
                 }
             )
         }
