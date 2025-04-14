@@ -70,7 +70,7 @@ fun ListAppbar(
                     sharedViewModel.searchAppBarState.value = SearchAppBarState.OPENED
                 },
                 onSortClicked = {},
-                onDeleteClicked = {
+                onDeleteAllClicked = {
                     sharedViewModel.handleDatabaseActions(Action.DELETE_ALL)
                 }
             )
@@ -99,7 +99,7 @@ fun ListAppbar(
 fun DefaultListAppbar(
     onSearchClicked: () -> Unit = {},
     onSortClicked: (Priority) -> Unit = {},
-    onDeleteClicked: () -> Unit = {}
+    onDeleteAllClicked: () -> Unit = {}
 ) {
     TopAppBar(
         title = {
@@ -112,7 +112,7 @@ fun DefaultListAppbar(
             ListAppbarActions(
                 onSearchClicked = onSearchClicked,
                 onSortClicked = onSortClicked,
-                onDeleteClicked = onDeleteClicked
+                onDeleteAllClicked = onDeleteAllClicked
             )
         },
 
@@ -126,11 +126,11 @@ fun DefaultListAppbar(
 fun ListAppbarActions(
     onSearchClicked: () -> Unit,
     onSortClicked: (Priority) -> Unit,
-    onDeleteClicked: () -> Unit
+    onDeleteAllClicked: () -> Unit
 ) {
     SearchAction(onSearchClicked)
     SortAction(onSortClicked)
-    DeleteAllAction(onDeleteClicked)
+    DeleteAllAction(onDeleteAllClicked)
 }
 
 @Composable
@@ -348,7 +348,7 @@ fun ListAppbarPreview() {
     DefaultListAppbar(
         onSearchClicked = {},
         onSortClicked = {},
-        onDeleteClicked = {}
+        onDeleteAllClicked = {}
     )
 }
 
