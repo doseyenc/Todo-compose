@@ -8,6 +8,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -43,15 +44,16 @@ fun ListScreen(
     val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(key1 = action) {
-        if (action != Action.NO_ACTION && action != Action.DELETE_ALL) {
+        if (action != Action.NO_ACTION) {
             sharedViewModel.handleDatabaseActions(action)
-            val snackbarResult = snackBarHostState.showSnackbar(
-                message = "${action.name}: ${sharedViewModel.title.value}",
-                actionLabel = setActionLabel(action)
+            val snackBarResult = snackBarHostState.showSnackbar(
+                message = setMessage(action = action, taskTitle = sharedViewModel.title.value),
+                actionLabel = setActionLabel(action),
+                duration = SnackbarDuration.Long
             )
             undoDeleteTask(
                 action = action,
-                snackBarResult = snackbarResult,
+                snackBarResult = snackBarResult,
                 onUndoClicked = {
                     sharedViewModel.action.value = it
                 }
@@ -87,7 +89,6 @@ fun ListScreen(
     )
 }
 
-
 @Composable
 fun ListFab(
     onFabClicked: (taskId: Int) -> Unit
@@ -112,6 +113,14 @@ private fun setActionLabel(action: Action): String {
         "UNDO"
     } else {
         "OK"
+    }
+}
+
+fun setMessage(action: Action, taskTitle: String): String {
+    return if (action == Action.DELETE_ALL) {
+        "All tasks removed"
+    } else {
+        "${action.name}: $taskTitle"
     }
 }
 

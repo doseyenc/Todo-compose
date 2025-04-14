@@ -15,4 +15,8 @@
     <string name="drop_down_arrow">Drop Down Arrow</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
+    <string name="yesLbl">Yes</string>
+    <string name="noLbl">No</string>
+    <string name="delete_task">Remove \'%1$s\' ?</string>
+    <string name="delete_task_confirme">Are you sure you want to remove \'%1$s\' ?</string>
 </resources>
