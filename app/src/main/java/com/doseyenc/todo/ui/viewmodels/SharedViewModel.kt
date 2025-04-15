@@ -16,7 +16,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -44,6 +43,8 @@ class SharedViewModel @Inject constructor(
 
     private val _searchedTasks = MutableStateFlow<RequestState<List<ToDoTask>>>(RequestState.Idle)
     val searchedTasks: StateFlow<RequestState<List<ToDoTask>>> = _searchedTasks
+
+    private var lastAddedTask: ToDoTask? = null
 
     fun getAllTasks() {
         _allTasks.value = RequestState.Loading
@@ -115,12 +116,16 @@ class SharedViewModel @Inject constructor(
                 priority = priority.value
             )
 
-            val existingTasks = repository.getAllTasks.first()
-            if (existingTasks.any { it.title == newTask.title && it.description == newTask.description }) {
+            if (lastAddedTask?.title == newTask.title &&
+                lastAddedTask?.description == newTask.description &&
+                lastAddedTask?.priority == newTask.priority
+            ) {
                 return@launch
             }
 
             repository.addTask(newTask)
+
+            lastAddedTask = newTask
         }
     }
 
