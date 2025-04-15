@@ -16,6 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -105,15 +106,22 @@ class SharedViewModel @Inject constructor(
     }
 
     private fun addTask() {
+        if (title.value.isBlank() || description.value.isBlank()) return
+
         viewModelScope.launch(Dispatchers.IO) {
             val newTask = ToDoTask(
                 title = title.value,
                 description = description.value,
                 priority = priority.value
             )
+
+            val existingTasks = repository.getAllTasks.first()
+            if (existingTasks.any { it.title == newTask.title && it.description == newTask.description }) {
+                return@launch
+            }
+
             repository.addTask(newTask)
         }
-        searchAppBarState.value = SearchAppBarState.CLOSED
     }
 
     private fun deleteTask() {
